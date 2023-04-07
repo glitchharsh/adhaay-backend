@@ -9,11 +9,18 @@ from .managers import UserManager
 
 import datetime
 
+GENDER_CHOICES = (
+    ("MALE", "MALE"),
+    ("FEMALE", "FEMALE"),
+    ("OTHERS", "OTHERS"),
+)
 
 class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=40, blank=True)
     email = models.EmailField(unique=True, max_length=40)
     phone_number = models.CharField(unique=True, max_length=15)
+    age = models.CharField(max_length=5)
+    gender = models.CharField(max_length=15, choices=GENDER_CHOICES)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
