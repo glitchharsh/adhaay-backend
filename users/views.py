@@ -9,7 +9,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import AllowAny
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_500_INTERNAL_SERVER_ERROR
 from .serializers import MyTokenObtainPairSerializer
-from .permissions import APITokenPermission, AllowOptionsAuthentication
+from .permissions import APITokenPermission
 from mailer import Email
 import random
 import datetime
@@ -21,21 +21,21 @@ from django.templatetags.static import static
 class MyObtainTokenPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
     authentication_classes = []
-    permission_classes = [AllowOptionsAuthentication]
+    permission_classes = []
 
 
 class RegisterUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     authentication_classes = []
-    permission_classes = [AllowOptionsAuthentication]
+    permission_classes = []
 
 
 class SendEmailView(APIView):
 
     serializer_class = SendEmailSerializer
     authentication_classes = []
-    permission_classes = [AllowOptionsAuthentication]
+    permission_classes = []
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -65,7 +65,7 @@ class VerifyEmailView(APIView):
 
     serializer_class = VerifyEmailSerializer
     authentication_classes = []
-    permission_classes = [AllowOptionsAuthentication]
+    permission_classes = []
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -96,7 +96,7 @@ class VerifyEmailView(APIView):
 class SendEmailPasswordView(APIView):
     serializer_class = SendEmailSerializer
     authentication_classes = []
-    permission_classes = [AllowOptionsAuthentication]
+    permission_classes = []
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -124,7 +124,7 @@ class SendEmailPasswordView(APIView):
 class VerifyEmailPasswordView(APIView):
     serializer_class = VerifyEmailSerializer
     authentication_classes = []
-    permission_classes = [AllowOptionsAuthentication]
+    permission_classes = []
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -153,7 +153,7 @@ class VerifyEmailPasswordView(APIView):
 class SetNewPasswordView(APIView):
     serializer_class = SetNewPasswordSerializer
     authentication_classes = []
-    permission_classes = [AllowOptionsAuthentication]
+    permission_classes = []
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
