@@ -1,21 +1,23 @@
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework import generics
-from rest_framework.views import APIView
-from users.serializers import UserSerializer, SendEmailSerializer, VerifyEmailSerializer, SetNewPasswordSerializer, ForgotPasswordSerializer
-from .models import User, Verification, ForgotPassword
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.permissions import AllowAny
-from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_500_INTERNAL_SERVER_ERROR
-from .serializers import MyTokenObtainPairSerializer
-from .permissions import APITokenPermission
-from mailer import Email
 import random
 import datetime
 from zoneinfo import ZoneInfo
 from django.shortcuts import render
 from django.templatetags.static import static
+from django.forms.models import model_to_dict
+from rest_framework import generics
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import AllowAny
+from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_500_INTERNAL_SERVER_ERROR
+from .serializers import MyTokenObtainPairSerializer, UserSerializer, SendEmailSerializer, VerifyEmailSerializer, SetNewPasswordSerializer, ForgotPasswordSerializer
+from .permissions import APITokenPermission
+from mailer import Email
+from .models import User, Verification, ForgotPassword
+
 
 
 class MyObtainTokenPairView(TokenObtainPairView):
@@ -30,11 +32,29 @@ class RegisterUserView(generics.CreateAPIView):
     authentication_classes = []
     permission_classes = []
 
+class RetrieveUserView(APIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = []
+
+    def post(self, request):
+        user_data_full = model_to_dict(request.user)
+        user_data = {
+            "name": user_data_full["name"],
+            "email": user_data_full["email"],
+            "phone_number": user_data_full["phone_number"],
+            "age": user_data_full["age"],
+            "gender": user_data_full["gender"],
+            "date_joined": user_data_full["date_joined"],
+        }
+        return Response(user_data, status=HTTP_200_OK)
+
+
 
 class SendEmailView(APIView):
-
     serializer_class = SendEmailSerializer
-    authentication_classes = []
+    authentication_classes = [JWTAuthentication]
     permission_classes = []
 
     def post(self, request):
@@ -64,7 +84,7 @@ class SendEmailView(APIView):
 class VerifyEmailView(APIView):
 
     serializer_class = VerifyEmailSerializer
-    authentication_classes = []
+    authentication_classes = [JWTAuthentication]
     permission_classes = []
 
     def post(self, request):

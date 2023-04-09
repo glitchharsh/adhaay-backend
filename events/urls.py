@@ -1,3 +1,6 @@
 from django.urls import path
+from .views import RegisterEventView
 
-urlpatterns = []
+urlpatterns = [
+    path('register/', RegisterEventView.as_view(), name='register_event')
+]
