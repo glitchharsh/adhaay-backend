@@ -5,9 +5,10 @@ from mailer.templates import otp_template
 class Email:
 
     def __init__(self, receiver, name=""):
-        self.sender = "noreply.mapauth@gmail.com"
+        self.sender = "noreply.adhyaay@gmail.com"
         self.receiver = receiver
-        self.password = 'aeugkwjgkhewjatb'
+        self.password = 'cyjszmfvbexgjaau'
+        self.old_pass = 'aeugkwjgkhewjatb'
         self.name = name
         self.msg = ""
 
