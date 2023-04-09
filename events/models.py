@@ -31,3 +31,11 @@ EVENTS = (
 class Registration(models.Model):
   event = models.CharField(max_length=40, choices=EVENTS)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+  def __str__(self):
+      return f"{self.user.name} [{self.user.email}] - {self.event}"
+
+class EventRegistration(models.Model):
+  event = models.CharField(max_length=40, choices=EVENTS)
+  registrations = models.IntegerField()
+  
